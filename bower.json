@@ -1,0 +1,16 @@
+{
+	"author": "Nick Kelly",
+	"name": "fnInplaceEdit",
+	"version": "1.0.0",
+	"homepage": "http://frozennode.com/inline-edit",
+	"keywords": [
+		"angular",
+		"inplaceedit",
+		"inlineedit"
+	],
+	"main": "./fnEditable.js",
+	"dependencies": {
+		"angular": ">=1.2.0"
+	},
+	"devDependencies": {}
+}
