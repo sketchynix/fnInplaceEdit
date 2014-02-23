@@ -3,7 +3,7 @@ fnInplaceEdit
 
 An in-place editing directive for AngularJS with permission checks.
 
-![inplace editing preview](http://frozennode.com/images/inlineEditPreview.png)
+![inplace editing preview](http://frozennode.com/images/inlineEditPreview.jpg)
 
 The directive turns a container into a clickable area that will open up with an input box to edit the content of the area. 
 It keeps the value of the input box as a draft until the user saves. At that point it will update the value.
@@ -25,17 +25,17 @@ Then use the directive in your template
 ##Options
 The property to be edited should be given through the ng-model attribute
 
-save
+**save**
 An optional method to call when the user saves the value. 
 This method will be passed the value the user has entered in the input box. 
 It is up to this method to determine whether or not to set the parent scope value to that of the directive.
 If this is not set, the directive will simply set the scope value to that entered in the input box (draft)
 
-remove
+**remove**
 An optional method that might be useful in an ng-repeat
 
-permission
+**permission**
 A method that will be called to check if the user can edit the content. Should return a boolean
 
-containerClass
+**containerClass**
 A class to add to the container when the input box is visible. Defaults to 'shown'
