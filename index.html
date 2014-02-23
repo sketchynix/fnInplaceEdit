@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/fn.css">
+	</head>
+	<body ng-app="testApp">
+		<main ng-controller="mainController">
+			<ul>
+				<li>
+					<div class="fn-editable" ng-model="exampleValue"></div>
+				</li>
+				<li>
+					<div class="fn-editable" ng-model="exampleValue2" save="saveExampleValue"></div>
+				</li>
+				<li>
+					<div class="fn-editable" ng-model="exampleValue3" permission="permissionCheck()"></div>
+				</li>
+				<li>
+					<div class="fn-editable" ng-model="exampleValue4" remove="removeExample4('example4')"></div>
+				</li>
+			</ul>
+		</main>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+		<script src="/fnEditable.js"></script>
+		<script>
+			'use strict';
+
+			var testApp = angular.module('testApp', ['fnInplaceEdit']);
+
+			testApp.controller('mainController', function($scope){
+
+				$scope.exampleValue = 'I will be written on save no matter what';
+
+				$scope.exampleValue2 = 'Only written if save function does it';
+
+				$scope.exampleValue3 = 'Cant be changed due to permission method';
+
+				$scope.exampleValue4 = 'Example with Remove method';
+
+				$scope.saveExampleValue = function(val){
+					/*
+						some logic to verify we want to write the provided val
+						to the model
+					*/
+					$scope.exampleValue2 = val;
+				};
+
+				/**
+				 * Should return a boolean
+				 */
+				$scope.permissionCheck = function(){
+					return false;
+				}
+
+				/**
+				 * This would be useful in an ng-repeat with an index passed in
+				 */
+				$scope.removeExample4 = function(index){
+					console.log(index);
+				};
+			});
+		</script>
+	</body>

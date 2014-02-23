@@ -1,0 +1,37 @@
+ul li{
+	list-style: none;
+	position: relative;
+	height: 60px;
+}
+
+input[type="text"]{
+	background: #fff; /* Old browsers */
+	border: 1px solid #ddd;
+	margin: 0 0 5px;
+	padding: 10px 9px;
+	box-sizing: border-box;
+	display: block;
+	width: 100%;
+}
+
+.fn-editable-wrap{
+	display: inline-block;
+	vertical-align: middle;
+	min-width: 40px;
+	font-size: 14px;
+}
+
+.fn-editable-wrap.shown >div{
+	position: absolute;
+	z-index: 100000;
+	min-width: 285px;
+	top: -8px;
+	left: -23px;
+	padding: 5px;
+	background: #f1f1f1;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.15);
+	border: 1px solid #ccc;
+}
