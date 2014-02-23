@@ -1,7 +1,7 @@
 /**
  *	In-place content entry and editing directive
  */
-angular.module('fnInplaceEdit', []).directive('fnEditable', function($timeout, $document){
+angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$document', function($timeout, $document){
 	return {
         restrict: 'AC',
 		scope: {
@@ -144,4 +144,4 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', function($timeout, $
             });
         }
      }
-});
+}]);
