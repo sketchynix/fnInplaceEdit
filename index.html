@@ -4,7 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="/fn.css">
 	</head>
 	<body ng-app="testApp">
-		<main ng-controller="mainController">
+		<div role="main" ng-controller="mainController">
 			<ul>
 				<li>
 					<div class="fn-editable" ng-model="exampleValue"></div>
@@ -19,7 +19,7 @@
 					<div class="fn-editable" ng-model="exampleValue4" remove="removeExample4('example4')"></div>
 				</li>
 			</ul>
-		</main>
+		</div>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
 		<script src="/fnEditable.js"></script>
 		<script>
