@@ -1,7 +1,7 @@
 /**
  *	In-place content entry and editing directive
  */
-angular.module('fnInplaceEdit', []).directive('fnEditable', function($timeout, $document){
+angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$document', function($timeout, $document){
 	return {
         restrict: 'AC',
 		scope: {
@@ -27,7 +27,6 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', function($timeout, $
             var hasPermission = true, //track if the user has perssion
                 containerClass = angular.isString(scope.containerClass) ? scope.containerClass : 'shown';
 
-            console.log(scope);
             /**
              * Optional method to call if we wanted to remove the entire container or something
              * @return {void}
@@ -145,4 +144,4 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', function($timeout, $
             });
         }
      }
-});
+}]);
