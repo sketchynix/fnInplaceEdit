@@ -16,7 +16,7 @@
 					<div class="fn-editable" ng-model="exampleValue3" permission="permissionCheck()"></div>
 				</li>
 				<li>
-					<div class="fn-editable" ng-model="exampleValue4" remove="removeExample4('example4')"></div>
+					<div class="fn-editable" ng-model="exampleValue4" buttons="example4buttons" ng-show="example4visible"></div>
 				</li>
 			</ul>
 		</div>
@@ -35,7 +35,9 @@
 
 				$scope.exampleValue3 = 'Cant be changed due to permission method';
 
-				$scope.exampleValue4 = 'Example with Remove method';
+				$scope.exampleValue4 = 'Example with extra buttons defined';
+
+				$scope.example4visible = true;
 
 				$scope.saveExampleValue = function(val){
 					/*
@@ -52,12 +54,22 @@
 					return false;
 				}
 
-				/**
-				 * This would be useful in an ng-repeat with an index passed in
-				 */
-				$scope.removeExample4 = function(index){
-					console.log(index);
-				};
+				$scope.example4buttons = [{
+						action: function(){ alert('call me when the button is clicked'); },
+						text: 'Click Me',
+						cssClass: 'blue'
+					},
+					{
+						action: function(){ alert('call me when the second button is clicked'); },
+						text: 'Click Me Too',
+						cssClass: 'pink'
+					},
+					{
+						action: function(){ $scope.example4visible = false; },
+						text: 'Hide This Editable',
+						cssClass: 'black'
+					}
+				];
 			});
 		</script>
 	</body>

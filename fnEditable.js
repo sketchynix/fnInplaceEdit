@@ -8,35 +8,41 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
             value: '=ngModel', //model value to edit
             permission: '&', //method to call to check for permissions,
             save: '=', //method to call on enter
-            remove: '&', //method to call when the user wants to remove the item bound
+            buttons: '=', //Custom buttons to add to the template
             containerClass: '@' //optional class to add to the parent container when the input is visible - defaults to shown
         },
         template: '<span ng-click="toggleInput()">{{value}}</span>'+
                 '<div ng-show="showInput"><input type="text" value="" ng-model="draft" />'+
                 '<div><button ng-click="saveEdit()">Save</button>'+
                 '<button ng-click="cancelEdit()">Cancel</button>' +
-                '<button ng-click="removeEditable()" ng-show="showRemove">Remove</button></div></div>',
+                '<button ng-repeat="button in buttons" ng-click="button.action()" class="{{button.cssClass}}">{{button.text}}</button>'+
+                '</div></div>',
         replace: false,
         link: function(scope, element, attrs) {
             element.addClass('fn-editable-wrap');
 
-            scope.showRemove = angular.isFunction(scope.remove);
             scope.draft = scope.value;
             scope.showInput = false;
 
             var hasPermission = true, //track if the user has perssion
-                containerClass = angular.isString(scope.containerClass) ? scope.containerClass : 'shown';
+                containerClass = angular.isString(scope.containerClass) ? scope.containerClass : 'shown',
+                /**
+                * If we are clicking anywhere outside of the in-place editing box, we want to
+                * hide the input
+                */
+                docListener = $document.bind('click', hideInput);
 
             /**
-             * Optional method to call if we wanted to remove the entire container or something
-             * @return {void}
+             * Hide the input and show the span
+             * @return {[type]} [description]
              */
-            scope.removeEditable = function(){
-                if(angular.isFunction(scope.remove)){
-                    scope.remove();
+            function hideInput(){
+                if(scope.showInput){
+                    scope.$apply(function(){
+                        scope.showInput = false;
+                    });
                 }
-            };
-
+            }
             /**
              * Write the draft value to the parent scope (value)
              * @return {void}
@@ -95,24 +101,6 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
             }).bind('click', function(e){
                 e.stopPropagation();
             });
-
-            /**
-             * Hide the input and show the span
-             * @return {[type]} [description]
-             */
-            function hideInput(){
-                if(scope.showInput){
-                    scope.$apply(function(){
-                        scope.showInput = false;
-                    });
-                }
-            }
-
-            /**
-             * If we are clicking anywhere outside of the in-place editing box, we want to
-             * hide the input
-             */
-            var docListener = $document.bind('click', hideInput);
 
             /**
              * Remove the event listener when the page changes
