@@ -9,10 +9,14 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
             permission: '&', //method to call to check for permissions,
             save: '=', //method to call on enter
             buttons: '=', //Custom buttons to add to the template
-            containerClass: '@' //optional class to add to the parent container when the input is visible - defaults to shown
+            containerClass: '@', //optional class to add to the parent container when the input is visible - defaults to shown
+            type: '@fnInputType',
+            placeholder: '@fnPlaceholder'
         },
-        template: '<span ng-click="toggleInput()">{{value}}</span>'+
-                '<div ng-show="showInput"><input type="text" value="" ng-model="draft" />'+
+        template: '<span ng-click="toggleInput()" ng-show="value.length > 0 && !showInput">{{value}}</span>' +
+                '<span ng-click="toggleInput()" ng-show="value.length == 0 && !showInput">{{placeholder}}</span>'+
+                '<div ng-show="showInput"><input ng-if="type == \'text\'" type="text" value="" ng-model="draft" />'+
+                '<textarea ng-if="type == \'textarea\'" value="" ng-model="draft"></textarea>'+
                 '<div><button ng-click="saveEdit()">Save</button>'+
                 '<button ng-click="cancelEdit()">Cancel</button>' +
                 '<button ng-repeat="button in buttons" ng-click="button.action()" class="{{button.cssClass}}">{{button.text}}</button>'+
@@ -79,7 +83,7 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
                     scope.showInput = true;
                     //wrap in timeout to make sure it is displayed before focusing
                     $timeout(function(){
-                        var inp = element.find('input')[0];
+                        var inp = scope.type === 'textarea' ? element.find('textarea')[0] : element.find('input')[0];
                         inp.focus();
                         inp.select();
                     }, 0);
