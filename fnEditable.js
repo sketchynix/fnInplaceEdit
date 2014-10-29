@@ -4,6 +4,7 @@
 angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$document', function($timeout, $document){
     return {
         restrict: 'AC',
+        requires: 'ngModel',
         scope: {
             value: '=ngModel', //model value to edit
             permission: '&', //method to call to check for permissions,
@@ -15,8 +16,8 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
         },
         template: '<span ng-click="toggleInput()" ng-show="value.length > 0 && !showInput">{{value}}</span>' +
                 '<span ng-click="toggleInput()" ng-show="value.length == 0 && !showInput">{{placeholder}}</span>'+
-                '<div ng-show="showInput"><input ng-if="type == \'text\'" type="text" value="" ng-model="draft" />'+
-                '<textarea ng-if="type == \'textarea\'" value="" ng-model="draft"></textarea>'+
+                '<div ng-show="showInput"><input ng-show="type == \'text\'" type="text" value="" ng-model="draft" />'+
+                '<textarea ng-show="type == \'textarea\'" value="" ng-model="draft"></textarea>'+
                 '<div><button ng-click="saveEdit()">Save</button>'+
                 '<button ng-click="cancelEdit()">Cancel</button>' +
                 '<button ng-repeat="button in buttons" ng-click="button.action()" class="{{button.cssClass}}">{{button.text}}</button>'+
