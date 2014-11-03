@@ -12,13 +12,14 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
             buttons: '=', //Custom buttons to add to the template
             containerClass: '@', //optional class to add to the parent container when the input is visible - defaults to shown
             type: '@fnInputType',
-            placeholder: '@fnPlaceholder'
+            placeholder: '@fnPlaceholder',
+            updateOnKeypress: '=fnUpdateOnKeypress'
         },
         template: '<span ng-click="toggleInput()" ng-show="value.length > 0 && !showInput">{{value}}</span>' +
                 '<span ng-click="toggleInput()" ng-show="value.length == 0 && !showInput">{{placeholder}}</span>'+
                 '<div ng-show="showInput"><input ng-show="type == \'text\'" type="text" value="" ng-model="draft" />'+
-                '<textarea ng-show="type == \'textarea\'" value="" ng-model="draft"></textarea>'+
-                '<div><button ng-click="saveEdit()">Save</button>'+
+                '<textarea ng-show="type == \'textarea\'" ng-model="draft"></textarea>'+
+                '<div ng-show="!!save"><button ng-click="saveEdit()">Save</button>'+
                 '<button ng-click="cancelEdit()">Cancel</button>' +
                 '<button ng-repeat="button in buttons" ng-click="button.action()" class="{{button.cssClass}}">{{button.text}}</button>'+
                 '</div></div>',
@@ -52,15 +53,16 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
              * Write the draft value to the parent scope (value)
              * @return {void}
              */
-            scope.saveEdit = function(){
+            scope.saveEdit = function(showInput){
                 if(hasPermission){
                      if(angular.isFunction(scope.save)){
                         scope.save(scope.draft);
                     } else {
                         scope.value = scope.draft;
                     }
-                    // writeDisplay(scope.draft);
-                    scope.showInput = false;
+                    if(!showInput){
+                        scope.showInput = false;
+                    }
                 }
             };
 
@@ -84,9 +86,11 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
                     scope.showInput = true;
                     //wrap in timeout to make sure it is displayed before focusing
                     $timeout(function(){
-                        var inp = scope.type === 'textarea' ? element.find('textarea')[0] : element.find('input')[0];
-                        inp.focus();
-                        inp.select();
+                        var inp = scope.type === 'textarea' ? false : element.find('input')[0];
+                        if(inp){
+                            inp.focus();
+                            inp.select();
+                        }
                     }, 0);
                 }
             };
@@ -100,8 +104,14 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
                    e.stopPropagation();
                     if(e.keyCode === 13 || e.which === 13){
                         e.preventDefault();
-                        scope.$apply(scope.saveEdit);
+                        scope.saveEdit();
+                        scope.$digest();
                    }
+
+                   if(scope.updateOnKeypress){
+                        scope.saveEdit(true);
+                        scope.$digest();
+                    }
                 }
             }).bind('click', function(e){
                 e.stopPropagation();
@@ -135,6 +145,10 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
                     element.removeClass(containerClass);
                 }
             });
+
+            scope.$on('$destroy', function(){
+                $document.off(docListener);
+            })
         }
     }
 }]);
