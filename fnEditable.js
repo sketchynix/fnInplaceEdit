@@ -145,10 +145,6 @@ angular.module('fnInplaceEdit', []).directive('fnEditable', ['$timeout', '$docum
                     element.removeClass(containerClass);
                 }
             });
-
-            scope.$on('$destroy', function(){
-                $document.off(docListener);
-            })
         }
     }
 }]);
